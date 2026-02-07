@@ -66,11 +66,14 @@ export default function OutliersPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="page-container">
       <h2>Outlier Detection</h2>
-      <p>Detect unusual years using z-score thresholding (classical statistics).</p>
+      <p>
+        Identify unusual years in hospital admission rates using z-score statistical analysis. 
+        Adjust the z-threshold to control the sensitivity of outlier detection.
+      </p>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
+      {error && <p className="error-state">{error}</p>}
 
       {meta && (
         <FilterPanel
@@ -83,29 +86,31 @@ export default function OutliersPage() {
         />
       )}
 
-      {loading && <p>Running analysis...</p>}
+      {loading && <p className="loading-state">Running outlier analysis...</p>}
 
       {result && !result.error && (
-        <div style={{ marginTop: 16 }}>
+        <div style={{ marginTop: 24 }}>
           <StatCards
-            title="Outlier Stats"
+            title="Analysis Statistics"
             stats={[
-              { label: "Mean", value: result.mean },
-              { label: "Std Dev", value: result.stdev },
+              { label: "Mean Rate", value: result.mean },
+              { label: "Std Deviation", value: result.stdev },
               { label: "Z Threshold", value: result.z_threshold },
               { label: "Outliers Found", value: (result.outliers || []).length },
             ]}
           />
 
-          <h3 style={{ marginTop: 16 }}>Outliers</h3>
+          <h3 style={{ marginTop: 24 }}>Detected Outliers</h3>
           {(result.outliers || []).length === 0 ? (
-            <p>No outliers detected for this configuration.</p>
+            <p style={{ color: "#6b7280", marginTop: 12 }}>
+              No outliers detected for this configuration. Try adjusting the z-threshold or changing filter parameters.
+            </p>
           ) : (
-            <table border="1" cellPadding="8" style={{ borderCollapse: "collapse" }}>
+            <table>
               <thead>
                 <tr>
                   <th>Year</th>
-                  <th>Rate</th>
+                  <th>Admission Rate</th>
                   <th>Z-Score</th>
                 </tr>
               </thead>
@@ -113,8 +118,8 @@ export default function OutliersPage() {
                 {result.outliers.map((o) => (
                   <tr key={o.year}>
                     <td>{o.year}</td>
-                    <td>{o.rate}</td>
-                    <td>{o.z}</td>
+                    <td>{typeof o.rate === 'number' ? o.rate.toFixed(3) : o.rate}</td>
+                    <td>{typeof o.z === 'number' ? o.z.toFixed(3) : o.z}</td>
                   </tr>
                 ))}
               </tbody>

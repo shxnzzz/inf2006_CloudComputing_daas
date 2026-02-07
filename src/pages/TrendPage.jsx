@@ -64,11 +64,14 @@ export default function TrendPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="page-container">
       <h2>Trend Analysis</h2>
-      <p>Explore yearly admission rate trends with summary statistics and YoY change.</p>
+      <p>
+        Explore yearly hospital admission rate trends with comprehensive summary statistics 
+        and year-over-year percentage changes. Customize your analysis using the filters below.
+      </p>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
+      {error && <p className="error-state">{error}</p>}
 
       {meta && (
         <FilterPanel
@@ -81,29 +84,29 @@ export default function TrendPage() {
         />
       )}
 
-      {loading && <p>Running analysis...</p>}
+      {loading && <p className="loading-state">Running trend analysis...</p>}
 
       {result && !result.error && (
-        <div style={{ display: "grid", gap: 16, marginTop: 16 }}>
+        <div style={{ display: "grid", gap: 20, marginTop: 24 }}>
           <StatCards
-            title="Summary"
+            title="Summary Statistics"
             stats={[
-              { label: "Mean", value: result.summary?.mean },
-              { label: "Std Dev", value: result.summary?.stdev },
-              { label: "Min", value: result.summary?.min },
-              { label: "Max", value: result.summary?.max },
+              { label: "Mean Rate", value: result.summary?.mean },
+              { label: "Std Deviation", value: result.summary?.stdev },
+              { label: "Minimum", value: result.summary?.min },
+              { label: "Maximum", value: result.summary?.max },
             ]}
           />
 
           <LineChart
-            title="Admission Rate Over Time"
+            title="Hospital Admission Rate Over Time"
             data={result.series || []}
             xKey="year"
             yKey="rate"
           />
 
           <BarChart
-            title="Year-on-Year % Change"
+            title="Year-on-Year Percentage Change"
             data={(result.yoy_change || []).map((d) => ({
               year: d.year,
               pct_change: d.pct_change,

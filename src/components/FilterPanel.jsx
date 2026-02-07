@@ -14,12 +14,15 @@ export default function FilterPanel({
 
   return (
     <div style={panelStyle}>
-      <h3 style={{ marginTop: 0 }}>Filters</h3>
+      <h3 style={{ marginTop: 0, color: "#374151", fontSize: 18, fontWeight: 600 }}>
+        Filters
+      </h3>
 
       <div style={gridStyle}>
         {/* Common fields */}
         <Field label="Age Group">
           <select
+            style={selectStyle}
             value={filters.age || ""}
             onChange={(e) => set("age", e.target.value)}
           >
@@ -33,6 +36,7 @@ export default function FilterPanel({
 
         <Field label="Facility Type">
           <select
+            style={selectStyle}
             value={filters.facility_type || ""}
             onChange={(e) => set("facility_type", e.target.value)}
           >
@@ -46,6 +50,7 @@ export default function FilterPanel({
 
         <Field label="Year Start">
           <select
+            style={selectStyle}
             value={filters.year_start || ""}
             onChange={(e) => set("year_start", e.target.value)}
           >
@@ -59,6 +64,7 @@ export default function FilterPanel({
 
         <Field label="Year End">
           <select
+            style={selectStyle}
             value={filters.year_end || ""}
             onChange={(e) => set("year_end", e.target.value)}
           >
@@ -74,6 +80,7 @@ export default function FilterPanel({
         {mode === "trend" && (
           <Field label="Sex">
             <select
+              style={selectStyle}
               value={filters.sex || ""}
               onChange={(e) => set("sex", e.target.value)}
             >
@@ -90,6 +97,7 @@ export default function FilterPanel({
           <>
             <Field label="Sex">
               <select
+                style={selectStyle}
                 value={filters.sex || ""}
                 onChange={(e) => set("sex", e.target.value)}
               >
@@ -103,12 +111,13 @@ export default function FilterPanel({
 
             <Field label="Z Threshold">
               <input
+                style={inputStyle}
                 type="number"
                 step="0.1"
                 value={filters.z_threshold ?? 2.0}
                 onChange={(e) => set("z_threshold", e.target.value)}
               />
-              <small style={{ color: "#6b7280" }}>
+              <small style={{ color: "#6b7280", fontSize: 12, marginTop: 4 }}>
                 Common: 2.0 (moderate), 2.5 (stricter), 3.0 (very strict)
               </small>
             </Field>
@@ -119,6 +128,7 @@ export default function FilterPanel({
           <>
             <Field label="Group A (Sex)">
               <select
+                style={selectStyle}
                 value={filters.groupA_sex || ""}
                 onChange={(e) => set("groupA_sex", e.target.value)}
               >
@@ -132,6 +142,7 @@ export default function FilterPanel({
 
             <Field label="Group B (Sex)">
               <select
+                style={selectStyle}
                 value={filters.groupB_sex || ""}
                 onChange={(e) => set("groupB_sex", e.target.value)}
               >
@@ -146,7 +157,7 @@ export default function FilterPanel({
         )}
       </div>
 
-      <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
+      <div style={{ marginTop: 20, display: "flex", gap: 12 }}>
         <button onClick={onRun} disabled={loading} style={btnStyle}>
           {loading ? "Running..." : "Run Analysis"}
         </button>
@@ -172,7 +183,14 @@ export default function FilterPanel({
 function Field({ label, children }) {
   return (
     <div style={fieldStyle}>
-      <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 6 }}>
+      <div
+        style={{
+          fontSize: 13,
+          color: "#374151",
+          marginBottom: 4,
+          fontWeight: 600,
+        }}
+      >
         {label}
       </div>
       {children}
@@ -188,38 +206,68 @@ function buildYears(min, max) {
 }
 
 const panelStyle = {
-  border: "1px solid #e5e7eb",
-  borderRadius: 12,
-  padding: 16,
-  background: "white",
-  marginTop: 12,
+  border: "1px solid #e0e0e0",
+  borderRadius: 8,
+  padding: 24,
+  background: "#fafafa",
+  marginTop: 20,
+  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
 };
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: 12,
+  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+  gap: 16,
+  marginTop: 16,
 };
 
 const fieldStyle = {
   display: "flex",
   flexDirection: "column",
-  gap: 6,
+  gap: 8,
+};
+
+const selectStyle = {
+  padding: "10px 12px",
+  borderRadius: 6,
+  border: "1px solid #d0d0d0",
+  background: "white",
+  fontSize: 14,
+  color: "#333",
+  cursor: "pointer",
+  transition: "all 0.2s ease",
+};
+
+const inputStyle = {
+  padding: "10px 12px",
+  borderRadius: 6,
+  border: "1px solid #d0d0d0",
+  background: "white",
+  fontSize: 14,
+  color: "#333",
+  transition: "all 0.2s ease",
 };
 
 const btnStyle = {
-  padding: "10px 14px",
-  borderRadius: 10,
-  border: "1px solid #111827",
-  background: "#111827",
+  padding: "12px 24px",
+  borderRadius: 6,
+  border: "none",
+  background: "#2c3e50",
   color: "white",
   cursor: "pointer",
+  fontWeight: 600,
+  fontSize: 14,
+  transition: "all 0.2s ease",
 };
 
 const btnSecondaryStyle = {
-  padding: "10px 14px",
-  borderRadius: 10,
-  border: "1px solid #e5e7eb",
-  background: "#f9fafb",
+  padding: "12px 24px",
+  borderRadius: 6,
+  border: "1px solid #d0d0d0",
+  background: "white",
+  color: "#555",
   cursor: "pointer",
+  fontWeight: 500,
+  fontSize: 14,
+  transition: "all 0.2s ease",
 };

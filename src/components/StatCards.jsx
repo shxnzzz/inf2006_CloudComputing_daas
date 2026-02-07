@@ -2,14 +2,14 @@ import React from "react";
 
 export default function StatCards({ title, stats = [] }) {
   return (
-    <div style={cardStyle}>
-      {title && <h3 style={{ margin: 0, marginBottom: 12 }}>{title}</h3>}
+    <div style={containerStyle}>
+      {title && <h3 style={titleStyle}>{title}</h3>}
 
       <div style={gridStyle}>
         {stats.map((s, idx) => (
           <div key={idx} style={statCardStyle}>
-            <div style={{ fontSize: 12, color: "#6b7280" }}>{s.label}</div>
-            <div style={{ fontSize: 20, fontWeight: 700 }}>
+            <div style={labelStyle}>{s.label}</div>
+            <div style={valueStyle}>
               {formatValue(s.value)}
             </div>
           </div>
@@ -17,37 +17,70 @@ export default function StatCards({ title, stats = [] }) {
       </div>
 
       {(!stats || stats.length === 0) && (
-        <p style={{ marginTop: 10, color: "#666" }}>No stats to display.</p>
+        <p style={emptyStyle}>No statistics available.</p>
       )}
     </div>
   );
 }
 
 function formatValue(v) {
-  if (v === null || v === undefined) return "-";
+  if (v === null || v === undefined) return "—";
   if (typeof v === "number") {
-    // pretty rounding for charts/stats
-    return Number.isInteger(v) ? v : v.toFixed(3);
+    return Number.isInteger(v) ? v.toLocaleString() : v.toFixed(3);
   }
   return String(v);
 }
 
-const cardStyle = {
-  border: "1px solid #e5e7eb",
-  borderRadius: 12,
-  padding: 16,
+const containerStyle = {
+  border: "1px solid #e0e0e0",
+  borderRadius: 8,
+  padding: 20,
   background: "white",
+  boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+};
+
+const titleStyle = {
+  margin: 0,
+  marginBottom: 16,
+  color: "#2c3e50",
+  fontSize: 17,
+  fontWeight: 600,
 };
 
 const gridStyle = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
-  gap: 12,
+  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+  gap: 16,
 };
 
 const statCardStyle = {
-  border: "1px solid #f3f4f6",
-  borderRadius: 10,
-  padding: 12,
+  border: "1px solid #e8e8e8",
+  borderRadius: 6,
+  padding: 16,
   background: "#fafafa",
+  transition: "all 0.2s ease",
+};
+
+const labelStyle = {
+  fontSize: 12,
+  color: "#666",
+  marginBottom: 8,
+  fontWeight: 500,
+  textTransform: "uppercase",
+  letterSpacing: "0.5px",
+};
+
+const valueStyle = {
+  fontSize: 24,
+  fontWeight: 600,
+  color: "#1a1a1a",
+  fontVariantNumeric: "tabular-nums",
+};
+
+const emptyStyle = {
+  marginTop: 12,
+  color: "#999",
+  textAlign: "center",
+  fontStyle: "italic",
+  fontSize: 14,
 };

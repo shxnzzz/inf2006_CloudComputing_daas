@@ -61,18 +61,21 @@ export default function ComparePage() {
       setResult(res);
       if (res?.error) setError(res.error);
     } catch (e) {
-      setError(e?.message || "Failed to run comparison.");
+      setError(e?.message || "Failed to run comparison analysis.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div className="page-container">
       <h2>Comparison Analysis</h2>
-      <p>Compare admission rates between two sexes over the same years.</p>
+      <p>
+        Compare hospital admission rates between two demographic groups over the same time period. 
+        This analysis reveals differences, ratios, and trends to identify disparities between groups.
+      </p>
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
+      {error && <p className="error-state">{error}</p>}
 
       {meta && (
         <FilterPanel
@@ -85,28 +88,28 @@ export default function ComparePage() {
         />
       )}
 
-      {loading && <p>Running comparison...</p>}
+      {loading && <p className="loading-state">Running comparison analysis...</p>}
 
       {result && !result.error && (
-        <div style={{ display: "grid", gap: 16, marginTop: 16 }}>
+        <div style={{ display: "grid", gap: 20, marginTop: 24 }}>
           <StatCards
             title="Comparison Summary"
             stats={[
-              { label: "Mean Diff", value: result.summary?.mean_diff },
+              { label: "Mean Difference", value: result.summary?.mean_diff },
               { label: "Max Gap Year", value: result.summary?.max_gap_year },
               { label: "Max Gap Value", value: result.summary?.max_gap_value },
             ]}
           />
 
           <LineChart
-            title="Difference (Group A - Group B)"
+            title={`Difference (${filters.groupA_sex} - ${filters.groupB_sex})`}
             data={result.diff_series || []}
             xKey="year"
             yKey="diff"
           />
 
           <LineChart
-            title="Ratio (Group A / Group B)"
+            title={`Ratio (${filters.groupA_sex} / ${filters.groupB_sex})`}
             data={result.ratio_series || []}
             xKey="year"
             yKey="ratio"
